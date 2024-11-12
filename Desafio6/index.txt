@@ -1,0 +1,119 @@
+<?php
+
+/* O que preciso fazer primeiro?
+    1 - Conectar ao banco;
+    2 - Criar um banco para o desafio;
+    3 - Criar a tabela de login;
+*/
+
+// Dados banco
+$host = 'db';
+$user = 'root';
+$pass = 'root';
+
+$conn = new mysqli($host, $user, $pass);
+
+$sql = 'CREATE DATABASE IF NOT EXISTS gerenciador_pedidos';
+
+if(!$conn->query($sql)){
+    echo 'Erro ao criar banco!';
+}
+
+
+mysqli_select_db($conn, 'gerenciador_pedidos');
+
+$sql = 'CREATE TABLE IF NOT EXISTS usuario(
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    user VARCHAR(20) NOT NULL,
+    senha VARCHAR(40) NOT NULL
+)';
+
+if(!$conn->query($sql)){
+    echo 'erro ao criar tabela';
+}
+
+$userLogin = null;
+
+if($_SERVER['REQUEST_METHOD']==="POST"){
+
+    if(isset($_POST['user']) && isset($_POST['senha']) && isset($_POST['cadastro'])){
+        $user = $_POST['user'];
+        $senha = md5($_POST['senha']);
+
+        $sql = 'INSERT INTO usuario (user, senha) VALUES (?, ?)';
+        $stmt = $conn->prepare($sql);
+        
+        if($stmt){
+            $stmt->bind_param('ss', $user, $senha);
+
+            if($stmt->execute()){
+                echo 'usuario cadastrado!';
+            } else {
+                echo 'erro ao cadastrar usuário!';
+            }
+
+            $stmt->close();
+        } else {
+            echo 'erro ao preparar o stmt';
+        }
+
+    } elseif(isset($_POST['user']) && isset($_POST['senha']) && isset($_POST['login'])){
+        $user = $_POST['user'];
+        $senha = $_POST['senha'];   
+
+        $sql = 'SELECT * FROM usuario WHERE user=?';
+        $stmt = $conn->prepare($sql);
+
+        if($stmt){
+            $stmt->bind_param('s', $user);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if($result->num_rows>0){
+                $row = $result->fetch_assoc();
+                if($row['senha'] === md5($senha)){
+                    $userLogin = $user;
+                    echo 'login bem sucedido';
+                } else {
+                    echo 'senha incorreta';
+                }
+            } else {
+                echo 'nenhum usuário com este nome encontrado';
+            }
+
+        } else {
+            echo 'erro ao preparar o stmt';
+        }
+    }   
+}
+
+if($_SERVER['REQUEST_METHOD']==='GET'){
+
+    if(isset($_GET['pedidos'])){
+
+        $userLogin = 'vitor';
+        $sql = 'SELECT * FROM pedidos WHERE nome_pedido=?';
+        $stmt = $conn->prepare($sql);
+
+        if($stmt){
+            $stmt->bind_param('s', $userLogin);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if($result->num_rows>0){
+                echo 'pedidos do: ' . $userLogin;
+                while($row = $result->fetch_assoc()){
+                    echo '<br>';
+                    echo $row['produto'];
+                }
+            } else {
+                echo 'nenhum pedido para esse usuário';
+            }
+
+        } else {
+            echo 'erro ao preparar o stmt';
+        }
+    }
+}
+
+?>
