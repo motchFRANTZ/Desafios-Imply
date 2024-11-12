@@ -1,0 +1,6 @@
+Desenvolver uma página que busque o clima em tempo real de uma cidade específicada
+
+Na página:
+    - Campo para informar cidade;
+    - Checkbox, para quando selecionado, receber um email e enviar o resultado da pesquisa para o email;
+    - O resultado da API também deve aparecer na página

@@ -1,0 +1,82 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(170deg, #f5f7fa, #5a86cb);
+}
+
+.container  {
+    text-align: center;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.64);
+}
+
+.titulo {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.form  {
+    margin-bottom: 1.5rem;
+}
+
+.form label.cidade {
+    display: block;
+    margin-bottom: 1rem;
+    color: #666;
+    font-size: 1.2rem;
+}
+
+.form input[type='text'] {
+    text-align: center;
+    font-size: 1.3rem;
+    display: block;
+    margin-bottom: 2rem;
+}
+
+.form input[type="checkbox"] {
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+
+.form label[for="checkbox"] {
+    font-size: 1rem;
+    color: #666;
+    vertical-align: middle;
+}
+
+#email-field label{
+    display: block;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    color: #666;
+    font-size: 1.2rem;
+}
+
+#email-field input{
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 2rem;
+}
+
+
+.form button {
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
